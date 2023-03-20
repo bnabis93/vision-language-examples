@@ -5,7 +5,7 @@ LABEL maintainer="Hugging Face"
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update
-RUN apt install -y git libsndfile1-dev tesseract-ocr espeak-ng python3 python3-pip ffmpeg
+RUN apt install -y git libsndfile1-dev tesseract-ocr espeak-ng python3.9 python3-pip ffmpeg
 RUN python3 -m pip install --no-cache-dir --upgrade pip
 
 # Use v4.27-release

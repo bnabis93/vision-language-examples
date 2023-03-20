@@ -1,6 +1,8 @@
 # ViT Huggingface example code
 This code is an implementation of the following paper.  
 [AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE](https://arxiv.org/pdf/2010.11929.pdf)
+- Inference example
+- [TODO] Inference Benchmark pytorch 1.x vs pytorch 2.0
 
 ## Server spec
 - GPU : NVIDIA GeForce RTX 2080 Ti
