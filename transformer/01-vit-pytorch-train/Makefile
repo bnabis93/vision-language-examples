@@ -6,4 +6,4 @@ env:
 	conda create -n $(BASENAME) -y python=$(PYTHON)
 
 setup:
-	pip install -r requirements.txt
+	pip install -r requirments.txt
