@@ -20,3 +20,17 @@ $ make env
 $ conda activate 01-vit-pytorch-train
 $ make setup
 ```
+
+### Training
+```
+$ python train.py
+Files already downloaded and verified
+Files already downloaded and verified
+Epoch 1/10
+----------
+Train Epoch: 0
+Train Epoch: 0 [0/50000 (0%)]   Loss: 2.533456
+Train Epoch: 0 [3200/50000 (6%)]        Loss: 1.910644
+Train Epoch: 0 [6400/50000 (13%)]       Loss: 2.203146
+...
+```
