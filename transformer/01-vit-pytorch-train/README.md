@@ -33,4 +33,8 @@ Train Epoch: 0 [0/50000 (0%)]   Loss: 2.533456
 Train Epoch: 0 [3200/50000 (6%)]        Loss: 1.910644
 Train Epoch: 0 [6400/50000 (13%)]       Loss: 2.203146
 ...
+
+
+$ ls checkpoint
+best_ckpt.pth
 ```

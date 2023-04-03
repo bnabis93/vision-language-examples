@@ -18,7 +18,7 @@ from torch.utils.data import DataLoader
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # Training settings
 EPOCHS = 10
-
+best_acc = 0
 # Training settings
 cifar10_classes = (
     "plane",
