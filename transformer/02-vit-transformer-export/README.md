@@ -55,11 +55,15 @@ optional arguments:
 - If you already know model ID, you can export onnx model easily.
 - Model ID : google/vit-base-patch16-224, https://huggingface.co/google/vit-base-patch16-224
 - atol is the tolerance. 
+- Device : 2080ti
+- torch model average inference time: 0.006316 seconds
 ```
 $ python -m transformers.onnx --model=google/vit-base-patch16-224 --atol 1e-3 onnx/
 
 # Measure inference time.
 $ python inference.py 
+['TensorrtExecutionProvider', 'CUDAExecutionProvider', 'CPUExecutionProvider']
+2023-04-05 01:24:35.075534148 [W:onnxruntime:Default, onnxruntime_pybind_state.cc:515 CreateExecutionProviderInstance] Failed to create TensorrtExecutionProvider. Please reference https://onnxruntime.ai/docs/execution-providers/TensorRT-ExecutionProvider.html#requirements to ensure all dependencies are met.
 Input name: pixel_values, output name: last_hidden_state
-Average Inference time: 0.127054 seconds
+Average Inference time: 0.006433 seconds
 ```

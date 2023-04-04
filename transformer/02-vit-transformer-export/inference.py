@@ -3,8 +3,12 @@ import time
 import numpy as np
 import onnxruntime as rt
 
+# Get the available providers
+options = rt.SessionOptions()
+print(rt.get_available_providers())
+
 # Load the ONNX model
-sess = rt.InferenceSession("onnx/model.onnx")
+sess = rt.InferenceSession("onnx/model.onnx", providers=rt.get_available_providers())
 
 # Get the input and output names
 input_name = sess.get_inputs()[0].name
