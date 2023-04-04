@@ -50,3 +50,11 @@ Downloading (…)rocessor_config.json: 100%|████████████
 logit shape : torch.Size([1, 1000])
 Predictions class : Siberian husky
 ```
+
+### Measure inference speed.
+```
+$ python inference.py 
+logit shape : torch.Size([1, 1000])
+Predictions class : Siberian husky
+Average Inference time: 0.006316 seconds
+```
