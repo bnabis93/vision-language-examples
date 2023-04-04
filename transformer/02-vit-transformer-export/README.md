@@ -22,7 +22,7 @@ $ conda activate 02-vit-transformer-export
 $ make setup
 ```
 
-### ViT model export to ONNX format 
+### Transformer.onnx (Kind of cli tool)
 - You can use transformer's onnx cli tool. `python -m transformers.onnx`
 ```
 $ python -m transformers.onnx --help
@@ -51,10 +51,15 @@ optional arguments:
                         Whether to use transformers.onnx instead of optimum.exporters.onnx to perform the ONNX export. It can be useful when exporting a model supported in transformers
                         but not in optimum, otherwise it is not recommended.
 ```
+### Simple ViT onnx export 
 - If you already know model ID, you can export onnx model easily.
 - Model ID : google/vit-base-patch16-224, https://huggingface.co/google/vit-base-patch16-224
 - atol is the tolerance. 
 ```
 $ python -m transformers.onnx --model=google/vit-base-patch16-224 --atol 1e-3 onnx/
 
+# Measure inference time.
+$ python inference.py 
+Input name: pixel_values, output name: last_hidden_state
+Average Inference time: 0.127054 seconds
 ```
