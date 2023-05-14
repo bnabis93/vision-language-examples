@@ -65,5 +65,13 @@ $ ls
 fine_tune_model.json
 ```
 
+### Inference
+- required fine_tune_model.json
+```
+$ python inference.py
+Fine tuning model: <YOUR MODEL NAME>
+hockey
+```
+
 ## Reference
 - https://github.com/openai/openai-cookbook/blob/main/examples/Fine-tuned_classification.ipynb
