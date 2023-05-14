@@ -57,6 +57,13 @@ FYI, result.csv has the following columns.
 step,elapsed_tokens,elapsed_examples,training_loss,training_sequence_accuracy,training_token_accuracy,validation_loss,validation_sequence_accuracy,validation_token_accuracy,classification/accuracy,classification/precision,classification/recall,classification/auroc,classification/auprc,classification/f1.0
 ```
 
+### Get my fine-tune model
+- https://platform.openai.com/docs/api-reference/fine-tunes/list
+```bash
+$ python get_fine_tune_model.py
+$ ls 
+fine_tune_model.json
+```
 
 ## Reference
 - https://github.com/openai/openai-cookbook/blob/main/examples/Fine-tuned_classification.ipynb
