@@ -44,7 +44,6 @@ $ python embedding.py
 $ ls
 model_list.json
 ```
-```
 
 ### Embedding api Response 
 ```
