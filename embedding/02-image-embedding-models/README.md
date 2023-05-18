@@ -43,3 +43,14 @@ $ ls
 imagebind_tsne.png
 ```
 
+## Results
+### CLIP
+![clip_tsne](output/clip_tsne.png)
+
+### DINO v2
+- ViT-B
+![dinov2_tsne](output/dinov2_tsne.png)
+
+### ImageBind
+![imagebind_tsne](output/imagebind_tsne.png)
+
