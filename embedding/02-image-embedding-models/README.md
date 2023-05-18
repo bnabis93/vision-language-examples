@@ -45,12 +45,12 @@ imagebind_tsne.png
 
 ## Results
 ### CLIP
-![clip_tsne](output/clip_tsne.png)
+<img src = "output/clip_tsne.png" width="30%" height="30%">
 
 ### DINO v2
 - ViT-B
-![dinov2_tsne](output/dinov2_tsne.png)
+<img src = "output/dinov2_tsne.png" width="30%" height="30%">
 
 ### ImageBind
-![imagebind_tsne](output/imagebind_tsne.png)
+<img src = "output/imagebind_tsne.png" width="30%" height="30%">
 
