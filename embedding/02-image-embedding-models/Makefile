@@ -8,8 +8,5 @@ env:
 setup:
 	pip install ftfy regex tqdm
 	pip install git+https://github.com/openai/CLIP.git
-	pip install git+https://github.com/facebookresearch/segment-anything.git
-
-
-sam-b:
-	curl -O https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth 
+	git clone https://github.com/facebookresearch/ImageBind.git
+	pip install -r ImageBind/requirements.txt
