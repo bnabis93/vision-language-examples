@@ -1,0 +1,4 @@
+*.pth
+ImageBind
+.checkpoints
+data
