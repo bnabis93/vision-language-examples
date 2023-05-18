@@ -2,7 +2,6 @@ import clip
 import torch
 import torchvision.transforms as T
 from PIL import Image
-import numpy as np
 import sys
 
 sys.path.append("./ImageBind")

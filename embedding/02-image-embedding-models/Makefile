@@ -10,3 +10,4 @@ setup:
 	pip install git+https://github.com/openai/CLIP.git
 	git clone https://github.com/facebookresearch/ImageBind.git
 	pip install -r ImageBind/requirements.txt
+	pip install matplotlib
