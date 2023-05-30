@@ -9,3 +9,5 @@ Vision-lanugage model example code.
 ## Embedding
 - [00-openai-text-embedding](embedding/00-openai-text-embedding)
 - [01-openai-text-embedding-fine-tuning](embedding/01-openai-text-embedding-fine-tuning)
+- [02-image-embedding-models](embedding/02-image-embedding-models)
+- [03-clip-similarity](embedding/03-clip-similarity)
