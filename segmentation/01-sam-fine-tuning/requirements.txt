@@ -1,3 +1,6 @@
 transformers
 datasets
 monai
+opencv-python
+pillow
+matplotlib
