@@ -1,4 +1,5 @@
 import numpy as np
+from typing import List
 from torch.utils.data import Dataset
 
 def get_bounding_box(binary_mask):
@@ -17,6 +18,7 @@ def get_bounding_box(binary_mask):
     bbox = [x_min, y_min, x_max, y_max]
 
     return bbox
+
 
 class SAMDataset(Dataset):
     def __init__(self, dataset, processor):

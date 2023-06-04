@@ -32,7 +32,7 @@ example_mask.save("outputs/example_mask.png")
 # Create pytorch dataset for fine-tuning
 processor = SamProcessor.from_pretrained("facebook/sam-vit-base")
 train_dataset = SAMDataset(dataset=dataset, processor=processor)
-train_dataloader = DataLoader(train_dataset, batch_size=2, shuffle=True) # Convert to torch data loader format
+train_dataloader = DataLoader(train_dataset, batch_size=4, shuffle=True) # Convert to torch data loader format
 
 # Load model
 model = SamModel.from_pretrained("facebook/sam-vit-base")
@@ -76,7 +76,7 @@ for epoch in range(num_epochs):
 
 
 # Save the model
-torch.save(model.state_dict(), "outputs/sam_breast_cancer.pt")
+model.save_pretrained("./sam_breast_cancer")
 
 # Save the loss in figure
 plt.plot(mean_losses)
