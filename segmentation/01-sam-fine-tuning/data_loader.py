@@ -2,7 +2,7 @@ import numpy as np
 from typing import List
 from torch.utils.data import Dataset
 
-def get_bounding_box(binary_mask):
+def get_bounding_box_center(binary_mask):
     """Get bounding box coordinates from binary mask."""
     # get bounding box from mask
     y_indices, x_indices = np.where(binary_mask > 0)
@@ -17,7 +17,11 @@ def get_bounding_box(binary_mask):
     y_max = min(H, y_max + np.random.randint(0, 20))
     bbox = [x_min, y_min, x_max, y_max]
 
-    return bbox
+    # Get center of bounding box
+    center_x = (x_min + x_max) / 2
+    center_y = (y_min + y_max) / 2
+
+    return [center_y, center_x]
 
 
 class SAMDataset(Dataset):
@@ -36,10 +40,10 @@ class SAMDataset(Dataset):
         binary_mask = np.array(item["label"])
 
         # get bounding box prompt
-        bbox_prompt = get_bounding_box(binary_mask)
+        point_prompt = get_bounding_box_center(binary_mask)
 
         # prepare image and prompt for the model
-        inputs = self.processor(image, input_boxes=[[bbox_prompt]], return_tensors="pt")
+        inputs = self.processor(image, input_points=[[point_prompt]], return_tensors="pt")
 
         # remove batch dimension which the processor adds by default
         inputs = {k:v.squeeze(0) for k,v in inputs.items()}

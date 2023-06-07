@@ -54,7 +54,7 @@ for epoch in range(num_epochs):
     for batch in tqdm(train_dataloader):
         # forward pass
         outputs = model(pixel_values=batch["pixel_values"].to(device),
-                        input_boxes=batch["input_boxes"].to(device),
+                        input_points=batch["input_points"].to(device),
                         multimask_output=False)
 
         # compute loss
