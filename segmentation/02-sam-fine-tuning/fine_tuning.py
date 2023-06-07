@@ -38,6 +38,7 @@ seg_loss = monai.losses.DiceCELoss(sigmoid=True, squared_pred=True, reduction="m
 # Train the model
 losses = []
 best_loss = 1e10
+os.makedirs(save_path, exist_ok=True)
 for epoch in range(num_epochs):
     epoch_loss = 0
     ## img_embed: (B, 256, 64, 64), gt2D: (B, 1, 256, 256), bboxes: (B, 4), points: (B, 2), B= batch size
@@ -58,11 +59,6 @@ for epoch in range(num_epochs):
                 boxes=box_torch,
                 masks=None,
             )
-        print("shape of image embedding: ", image_embedding.shape)
-        print("shape of sparse embeddings: ", sparse_embeddings.shape)
-        print("shape of dense embeddings: ", dense_embeddings.shape)
-        print("image_pe : ", model.prompt_encoder.get_dense_pe().shape)
-
         # Decoder part, calculate gradients.
         mask_predictions, _ = model.mask_decoder(
             image_embeddings=image_embedding.to(device),  # (B, 256, 64, 64)
