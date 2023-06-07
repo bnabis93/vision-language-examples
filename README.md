@@ -11,3 +11,7 @@ Vision-lanugage model example code.
 - [01-openai-text-embedding-fine-tuning](embedding/01-openai-text-embedding-fine-tuning)
 - [02-image-embedding-models](embedding/02-image-embedding-models)
 - [03-clip-similarity](embedding/03-clip-similarity)
+
+
+## Segmentation
+- [01-sam-transformer-fine-tuning](segmentation/01-sam-transformer-fine-tuning)
