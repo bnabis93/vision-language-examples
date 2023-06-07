@@ -1,3 +1,4 @@
 *.pt
 sam_breast_cancer
-dataset
+data
+models

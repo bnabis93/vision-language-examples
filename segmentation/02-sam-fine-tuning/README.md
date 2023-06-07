@@ -3,11 +3,11 @@
     - Conda
     - Download training dataset.
 
-## Download training dataset
+## Download training dataset and model
 - https://drive.google.com/file/d/18GhVEODbTi17jSeBXdeLQ7vHPdtlTYXK/view
 ```
 make download-dataset
-
+make download-model
 ```
 
 
@@ -16,6 +16,11 @@ make download-dataset
 make env
 conda activate 01-sam-transformer-fine-tuning
 make setup
+```
+
+## Create embedding for training
+```
+python create_embedding.py
 ```
 
 ## How to train
