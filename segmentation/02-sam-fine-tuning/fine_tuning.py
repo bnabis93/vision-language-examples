@@ -58,6 +58,10 @@ for epoch in range(num_epochs):
                 boxes=box_torch,
                 masks=None,
             )
+        print("shape of image embedding: ", image_embedding.shape)
+        print("shape of sparse embeddings: ", sparse_embeddings.shape)
+        print("shape of dense embeddings: ", dense_embeddings.shape)
+        print("image_pe : ", model.prompt_encoder.get_dense_pe().shape)
 
         # Decoder part, calculate gradients.
         mask_predictions, _ = model.mask_decoder(
