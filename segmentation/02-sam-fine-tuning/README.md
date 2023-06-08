@@ -56,3 +56,7 @@ python visualization.py
 ls outputs
 contour.png
 ```
+
+## Reference
+- https://github.com/bowang-lab/MedSAM
+- https://github.com/bowang-lab/MedSAM/issues/28
