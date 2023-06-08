@@ -23,6 +23,17 @@ img_idx = np.random.randint(len(test_data_names))
 image_data = io.imread(join(test_img_path, test_data_names[img_idx]))
 gt_data = io.imread(join(test_gt_path, test_data_names[img_idx]))
 gt_bbox = get_bbox_from_mask(gt_data)
+## Visualize gt bbox
+copy_image_data = image_data.copy()
+x_min, y_min, x_max, y_max = gt_bbox
+copy_image_data = cv2.rectangle(
+    copy_image_data,
+    (x_min, y_min),
+    (x_max, y_max),
+    (0, 255, 0),
+    thickness=2,
+)
+cv2.imwrite("outputs/gt_bbox.png", copy_image_data)
 
 # Load model
 sam = sam_model_registry[model_type](checkpoint=sam_checkpoint).to(device)
