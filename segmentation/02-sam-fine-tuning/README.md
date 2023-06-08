@@ -39,6 +39,20 @@ else:
 ```
 python fine_tuning.py
 
-ls sam_breast_cancer
-config.json  pytorch_model.bin
+ls outputs
+sam_model_best.pth sam_model_latest.pth
+```
+
+## Validation ising test dataset
+```
+python validation.py
+SAM Dice Coefficient:  0.6626904858068292
+MEDSAM Dice Coefficient:  0.8649356472360972
+```
+
+## Visualization random test dataset
+```
+python visualization.py
+ls outputs
+contour.png
 ```
