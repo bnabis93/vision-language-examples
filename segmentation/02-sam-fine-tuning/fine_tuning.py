@@ -47,22 +47,20 @@ for epoch in range(num_epochs):
             box_np = boxes.numpy()
             sam_trans = ResizeLongestSide(model.image_encoder.img_size)
 
-            # # Training the model w/ bbox
-            # box = sam_trans.apply_boxes(box_np, (gt2D.shape[-2], gt2D.shape[-1]))
-            # box_torch = torch.as_tensor(box, dtype=torch.float, device=device)
-            # if len(box_torch.shape) == 2:
-            #     box_torch = box_torch[:, None, :]  # (B, 1, 4)
-            # Training the model w/ point
+            # Note: Points are input to the model in (x,y) format
+            # Note: labels 1 (foreground point) or 0 (background point).
             point = sam_trans.apply_coords(
                 points.numpy(), (gt2D.shape[-2], gt2D.shape[-1])
             )
             point = torch.as_tensor(point, dtype=torch.float, device=device)
             if len(point.shape) == 2:
-                point = point[:, None, :]
+                point = point[:, None, :]  # (B, 1, 4)
+            label = np.ones((point.shape[0], 1))
+            label = torch.as_tensor(label, dtype=torch.int, device=device)
 
             # get prompt embeddings
             sparse_embeddings, dense_embeddings = model.prompt_encoder(
-                points=point,
+                points=(point, label),
                 boxes=None,
                 masks=None,
             )

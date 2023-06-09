@@ -55,11 +55,11 @@ def get_center_points(bbox: np.ndarray):
     x_min, y_min, x_max, y_max = bbox
     x_center = (x_min + x_max) / 2
     y_center = (y_min + y_max) / 2
-    return x_center, y_center
+    return [x_center, y_center]
 
 
 def get_bbox_from_mask(mask):
-    '''Returns a bounding box from a mask'''
+    """Returns a bounding box from a mask"""
     y_indices, x_indices = np.where(mask > 0)
     x_min, x_max = np.min(x_indices), np.max(x_indices)
     y_min, y_max = np.min(y_indices), np.max(y_indices)
