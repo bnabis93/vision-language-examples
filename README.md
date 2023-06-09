@@ -15,3 +15,4 @@ Vision-lanugage model example code.
 
 ## Segmentation
 - [01-sam-transformer-fine-tuning](segmentation/01-sam-transformer-fine-tuning)
+- [02-sam-point-fine-tuning](segmentation/02-sam-fine-tuning)

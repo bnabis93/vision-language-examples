@@ -1,0 +1,20 @@
+# ML
+monai
+torchvision
+
+# CV
+scikit-image
+opencv-python
+
+# Medical CV
+SimpleITK >= 2.2.1
+nibabel
+
+# Visualization
+matplotlib
+
+# Utils
+tqdm
+scipy
+pycocotools
+gdown
