@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 from skimage import io
 from segment_anything import SamPredictor, sam_model_registry
-from dataloader import get_bbox_from_mask
+from dataloader import get_center_points_from_mask, get_bbox_from_mask
 
 
 join = os.path.join
@@ -23,6 +23,9 @@ img_idx = np.random.randint(len(test_data_names))
 image_data = io.imread(join(test_img_path, test_data_names[img_idx]))
 gt_data = io.imread(join(test_gt_path, test_data_names[img_idx]))
 gt_bbox = get_bbox_from_mask(gt_data)
+gt_points = get_center_points_from_mask(gt_data)
+gt_label = np.array([1])
+
 ## Visualize gt bbox
 copy_image_data = image_data.copy()
 x_min, y_min, x_max, y_max = gt_bbox
@@ -33,7 +36,9 @@ copy_image_data = cv2.rectangle(
     (0, 255, 0),
     thickness=2,
 )
-cv2.imwrite("outputs/gt_bbox.png", copy_image_data)
+## Visualize gt points
+cv2.circle(copy_image_data, (int(gt_points[0]), int(gt_points[1])), 5, (0, 255, 0), -1)
+cv2.imwrite("outputs/gt_bbox_points.png", copy_image_data)
 
 # Load model
 sam = sam_model_registry[model_type](checkpoint=sam_checkpoint).to(device)
@@ -58,14 +63,17 @@ preprocessed_image[image_data == 0] = 0
 preprocessed_image = preprocessed_image.astype(np.uint8)
 h, w, _ = preprocessed_image.shape
 
+# Point preprocessing
+gt_points = np.array([gt_points])
+
 # SAM Inference
 sam_predictor.set_image(preprocessed_image)
 sam_seg, _, _ = sam_predictor.predict(
-    point_coords=None, box=gt_bbox, multimask_output=False
+    point_coords=gt_points, point_labels=gt_label, box=None, multimask_output=False
 )
 med_sam_predictor.set_image(preprocessed_image)
 med_sam_seg, _, _ = med_sam_predictor.predict(
-    point_coords=None, box=gt_bbox, multimask_output=False
+    point_coords=gt_points, point_labels=gt_label, box=None, multimask_output=False
 )
 
 # Visualize using contour in original image

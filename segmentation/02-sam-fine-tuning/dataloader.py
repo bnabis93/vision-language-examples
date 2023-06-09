@@ -71,3 +71,9 @@ def get_bbox_from_mask(mask):
     y_max = min(H, y_max + np.random.randint(0, 20))
 
     return np.array([x_min, y_min, x_max, y_max])
+
+
+def get_center_points_from_mask(mask):
+    """Returns a center point from a mask"""
+    bbox = get_bbox_from_mask(mask)
+    return get_center_points(bbox)
