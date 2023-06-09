@@ -45,7 +45,7 @@ sam_model_best.pth sam_model_latest.pth
 
 ## Validation ising test dataset
 ```
-python validation.py
+python evaluation.py
 SAM Dice Coefficient:  0.6626904858068292
 MEDSAM Dice Coefficient:  0.8649356472360972
 ```

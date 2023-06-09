@@ -4,7 +4,7 @@ import torch
 from skimage import io
 from segment_anything import SamPredictor, sam_model_registry
 from utils.loss import compute_dice_coefficient
-from dataloader import get_bbox_from_mask
+from dataloader import get_center_points_from_mask
 
 join = os.path.join
 
@@ -16,12 +16,6 @@ medsam_checkpoint = "outputs/sam_model_best.pth"
 test_img_path = "data/MedSAMDemo_2D/test/images"
 test_gt_path = "data/MedSAMDemo_2D/test/labels"
 test_data_names = sorted(os.listdir(test_img_path))
-
-# Load random image and gt from testset
-img_idx = np.random.randint(len(test_data_names))
-image_data = io.imread(join(test_img_path, test_data_names[img_idx]))
-gt_data = io.imread(join(test_gt_path, test_data_names[img_idx]))
-gt_bbox = get_bbox_from_mask(gt_data)
 
 # Load model
 sam = sam_model_registry[model_type](checkpoint=sam_checkpoint).to(device)
@@ -36,7 +30,9 @@ total_med_sam_dice_coef = []
 for img_name in test_data_names:
     image_data = io.imread(join(test_img_path, img_name))
     gt_data = io.imread(join(test_gt_path, img_name))
-    gt_bbox = get_bbox_from_mask(gt_data)
+    gt_points = get_center_points_from_mask(gt_data)
+    gt_points = np.array([gt_points])
+    gt_label = np.array([1])
 
     # Preprocessing
     lower_bound, upper_bound = np.percentile(image_data, 0.5), np.percentile(
@@ -57,11 +53,11 @@ for img_name in test_data_names:
     # SAM Inference
     sam_predictor.set_image(preprocessed_image)
     sam_seg, _, _ = sam_predictor.predict(
-        point_coords=None, box=gt_bbox, multimask_output=False
+        point_coords=gt_points, point_labels=gt_label, box=None, multimask_output=False
     )
     med_sam_predictor.set_image(preprocessed_image)
     med_sam_seg, _, _ = med_sam_predictor.predict(
-        point_coords=None, box=gt_bbox, multimask_output=False
+        point_coords=gt_points, point_labels=gt_label, box=None, multimask_output=False
     )
 
     # Validation
