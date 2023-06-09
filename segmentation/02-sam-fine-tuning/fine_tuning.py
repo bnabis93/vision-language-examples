@@ -20,6 +20,7 @@ model_type = "vit_b"
 checkpoint = "models/sam_vit_b_01ec64.pth"
 save_path = "./outputs"
 num_epochs = 100
+os.makedirs(save_path, exist_ok=True)
 
 # Set seeds
 torch.manual_seed(2023)
@@ -38,7 +39,6 @@ seg_loss = monai.losses.DiceCELoss(sigmoid=True, squared_pred=True, reduction="m
 # Train the model
 losses = []
 best_loss = 1e10
-os.makedirs(save_path, exist_ok=True)
 for epoch in range(num_epochs):
     epoch_loss = 0
     ## img_embed: (B, 256, 64, 64), gt2D: (B, 1, 256, 256), bboxes: (B, 4), points: (B, 2), B= batch size
