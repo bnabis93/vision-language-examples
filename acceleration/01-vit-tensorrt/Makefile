@@ -1,13 +1,3 @@
-PYTHON=3.10
-BASENAME=$(shell basename $(CURDIR))
-CURRENT_DIR = $(shell pwd)
-
-env:
-	conda create -n $(BASENAME) -y python=$(PYTHON)
-
-setup:
-	pip install -r requirements.txt
-
 convert-trt:
 	mkdir -p $(CURDIR)/output
 	docker run --gpus all -it \
@@ -20,8 +10,8 @@ convert-trt:
 
 benchmark:
 	docker run --gpus device=0 -it \
-			-v $(CURDIR)/output:/workspace/output \
-			--rm nvcr.io/nvidia/pytorch:23.06-py3 \
-			/bin/bash -c "trtexec \
-					--loadEngine=./output/model.trt \
-					--batch=1"
+		-v $(CURDIR)/output:/workspace/output \
+		--rm nvcr.io/nvidia/pytorch:23.06-py3 \
+		/bin/bash -c "trtexec \
+			--loadEngine=./output/model.trt \
+			--batch=1"
