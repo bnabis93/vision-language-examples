@@ -14,7 +14,6 @@ model = timm.create_model(
 onnx_export(
     model,
     "./output/model.onnx",
-    opset=19,
+    opset=17,
     dynamic_size=False,
-    check_forward=True,
 )
