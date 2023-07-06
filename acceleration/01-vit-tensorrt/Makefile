@@ -20,8 +20,8 @@ convert-trt:
 
 benchmark:
 	docker run --gpus device=0 -it \
-			-v $(CURDIR)/output:/workspace/output \
-			--rm nvcr.io/nvidia/pytorch:23.06-py3 \
-			/bin/bash -c "trtexec \
-					--loadEngine=./output/model.trt \
-					--batch=1"
+		-v $(CURDIR)/output:/workspace/output \
+		--rm nvcr.io/nvidia/pytorch:23.06-py3 \
+		/bin/bash -c "trtexec \
+			--loadEngine=./output/model.trt \
+			--batch=1"
