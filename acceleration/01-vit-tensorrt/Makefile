@@ -13,7 +13,7 @@ convert-trt:
 	docker run --gpus all -it \
 		-v $(CURDIR):/workspace/src \
 		-v $(CURDIR)/output:/workspace/output \
-		--rm nvcr.io/nvidia/pytorch:22.03-py3 \
+		--rm nvcr.io/nvidia/pytorch:23.06-py3 \
 		/bin/bash -c "python src/onnx_export.py && \
 			trtexec --onnx=./model.onnx \
 					--saveEngine=./output/model.trt"
