@@ -7,6 +7,7 @@ import argparse
 import time
 import torch
 from trt_infer import TrtModel
+import numpy as np
 
 torch.backends.cudnn.benchmark = True
 parser = argparse.ArgumentParser(description="PyTorch CIFAR10 Training")
@@ -24,7 +25,7 @@ def main():
     # Define trt model
     trt_engine_path = args.trt_path
     trt_net = TrtModel(trt_engine_path)
-    inputs = torch.randn(1, 3, 224, 224)
+    inputs = np.random.randn(1, 3, 224, 224).astype(np.float32)
 
     # Benchmark
     inference_times = []
