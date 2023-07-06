@@ -6,7 +6,7 @@
 import argparse
 import time
 import torch
-from trt.trt_infer import TrtModel
+from trt_infer import TrtModel
 
 torch.backends.cudnn.benchmark = True
 parser = argparse.ArgumentParser(description="PyTorch CIFAR10 Training")
