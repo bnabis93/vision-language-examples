@@ -6,11 +6,11 @@ import torch
 import time
 
 # Define global variables
+torch.backends.cudnn.benchmark = True
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 if device == "cpu":
     print("This code only supports GPU.")
     exit(-1)
-torch.cuda.synchronize()
 
 # Define pretrained vit model
 model = timm.create_model("vit_base_patch16_224", pretrained=True)
@@ -25,19 +25,13 @@ for _ in range(10):
 
 # Inference
 inference_times = []
-start_time, end_time = (
-    torch.cuda.Event(enable_timing=True),
-    torch.cuda.Event(enable_timing=True),
-)
 with torch.no_grad():
     for _ in range(100):
-        start_time.record()
+        torch.cuda.synchronize()
+        start = time.time()
         model(input.to(device))
-        end_time.record()
-        inference_time = start_time.elapsed_time(end_time) / 1000
-        inference_times.append(inference_time)
+        end = time.time()
+        torch.cuda.synchronize()
+        inference_times.append((end - start) * 1000)
 
-print(
-    "Vit Average Inference Time(ms) : ",
-    (sum(inference_times) / len(inference_times)) * 1000,
-)
+print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms" )

@@ -12,5 +12,5 @@ make setup
 - GPU: Nvidia A100
 ```
 python benchmark.py
-Vit Average Inference Time:  0.09351370096206665
+ViT average inference time : 4.16447639465332ms
 ```
