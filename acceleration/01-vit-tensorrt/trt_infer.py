@@ -66,7 +66,7 @@ class TrtModel:
         return inputs, outputs, bindings, stream
 
     def __call__(self, x: np.ndarray, batch_size=1):
-        x = x.astype(self.dtype)
+        x = x.dtype(self.dtype)
 
         np.copyto(self.inputs[0].host, x.ravel())
 
