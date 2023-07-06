@@ -9,6 +9,7 @@ make setup
 ```
 
 ## Benchmark
+- GPU: Nvidia A100
 ```
 python benchmark.py
 Vit Average Inference Time:  0.09351370096206665
