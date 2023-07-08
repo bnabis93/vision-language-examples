@@ -10,4 +10,4 @@ docker-setup:
 		--ulimit stack=67108864 \
 		-v $(CURDIR)/{FasterTransformer}:/workspace/FasterTransformer \
 		--workdir /workspace/FasterTransformer \
-		nvcr.io/nvidia/pytorch:22.09-py3 bash -c "export WORKSPACE = /workspace/FasterTransformer"
+		nvcr.io/nvidia/pytorch:22.09-py3 bash

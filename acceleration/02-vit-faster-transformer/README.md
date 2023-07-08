@@ -16,7 +16,10 @@
 > users can load the checkpoint and put the weight tensor into FasterTransformer directly. Users can also load the model in other formats, like numpy, and put them into FasterTransformer directly like the weight tensor.
 
 ## Benchmark
-
+```
+make docker-setup
+export WORKSPACE = /workspace/FasterTransformer
+```
 
 
 ## Reference
