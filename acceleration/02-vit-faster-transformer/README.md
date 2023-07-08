@@ -15,5 +15,9 @@
 - Load the checkpoint and put the weight tensor into FasterTransformer directly.
 > users can load the checkpoint and put the weight tensor into FasterTransformer directly. Users can also load the model in other formats, like numpy, and put them into FasterTransformer directly like the weight tensor.
 
+## Benchmark
+
+
+
 ## Reference
 - https://github.com/NVIDIA/FasterTransformer/blob/main/docs/QAList.md
