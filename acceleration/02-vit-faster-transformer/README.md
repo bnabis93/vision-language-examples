@@ -43,7 +43,11 @@ make -j12
 ### Run
 - Run ViT on binary file.
 - Firstly we use ./bin/vit_gemm as the tool to search the best GEMM configuration. And then run ./bin/vit_example
-- After gemm config setup, `FT-CPP-time 4.79 ms (100 iterations)`
+- Batch size=1: `FT-CPP-time 4.79 ms (100 iterations)`
+- Batch size=4: `FT-CPP-time 10.73 ms (100 iterations)`
+- Batch size=8: `FT-CPP-time 20.21 ms (100 iterations)`
+- Batch size=16: `FT-CPP-time 37.83 ms (100 iterations)`
+- Batch size=32: `FT-CPP-time 73.12 ms (100 iterations)`
 ```
 # TF32 mode.
 export NVIDIA_TF32_OVERRIDE=0
