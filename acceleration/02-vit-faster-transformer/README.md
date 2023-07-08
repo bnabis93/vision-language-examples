@@ -16,9 +16,6 @@
 > users can load the checkpoint and put the weight tensor into FasterTransformer directly. Users can also load the model in other formats, like numpy, and put them into FasterTransformer directly like the weight tensor.
 
 ## Benchmark
-### Server
-- CPU: AMD EPYC Processor (with IBPB)
-- GPU: A100 x1
 
 ### Setup
 ```
@@ -43,11 +40,6 @@ make -j12
 ### Run
 - Run ViT on binary file.
 - Firstly we use ./bin/vit_gemm as the tool to search the best GEMM configuration. And then run ./bin/vit_example
-- Batch size=1: `FT-CPP-time 4.79 ms (100 iterations)`
-- Batch size=4: `FT-CPP-time 10.73 ms (100 iterations)`
-- Batch size=8: `FT-CPP-time 20.21 ms (100 iterations)`
-- Batch size=16: `FT-CPP-time 37.83 ms (100 iterations)`
-- Batch size=32: `FT-CPP-time 73.12 ms (100 iterations)`
 ```
 # TF32 mode.
 export NVIDIA_TF32_OVERRIDE=0
@@ -60,6 +52,19 @@ export NVIDIA_TF32_OVERRIDE=0
 ./bin/vit_example <batch_size> <img_size> <patch_size> <embed_dim> <head_number> <layer_num> <with_cls_token> <is_fp16>
 ./bin/vit_example 1 224 16 768 12 12 1 0
 ```
+
+## Experiment
+### Server
+- CPU: AMD EPYC Processor (with IBPB)
+- GPU: A100 x1
+
+### Results
+- Batch size=1: `FT-CPP-time 4.79 ms (100 iterations)`
+- Batch size=4: `FT-CPP-time 10.73 ms (100 iterations)`
+- Batch size=8: `FT-CPP-time 20.21 ms (100 iterations)`
+- Batch size=16: `FT-CPP-time 37.83 ms (100 iterations)`
+- Batch size=32: `FT-CPP-time 73.12 ms (100 iterations)`
+
 
 ## Issue
 - fastertransformer speed slower than pytorch #325: https://github.com/NVIDIA/FasterTransformer/issues/325
