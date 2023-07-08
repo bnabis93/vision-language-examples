@@ -57,6 +57,8 @@ export NVIDIA_TF32_OVERRIDE=0
 ./bin/vit_example 1 224 16 768 12 12 1 0
 ```
 
+## Issue
+- fastertransformer speed slower than pytorch #325: https://github.com/NVIDIA/FasterTransformer/issues/325
 
 ## Reference
 - https://github.com/NVIDIA/FasterTransformer/blob/main/docs/QAList.md
