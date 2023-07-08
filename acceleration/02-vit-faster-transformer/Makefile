@@ -8,6 +8,6 @@ docker-setup:
 		--shm-size=16g \
 		--ulimit memlock=-1 \
 		--ulimit stack=67108864 \
-		-v $(CURDIR)/{FasterTransformer}:/workspace/FasterTransformer \
+		-v $(CURDIR)/FasterTransformer:/workspace/FasterTransformer \
 		--workdir /workspace/FasterTransformer \
 		nvcr.io/nvidia/pytorch:22.09-py3 bash
