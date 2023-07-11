@@ -1,8 +1,8 @@
 import timm
 from xformers.components.attention import ScaledDotProduct
 from xformers.helpers.timm_sparse_attention import TimmSparseAttention
-import torch.nn as nn
 import torch
+import time
 
 # Define global variables
 img_size = 224
@@ -37,3 +37,23 @@ def replace_attn_with_xformers_one(module, att_mask):
 ## Attention: https://facebookresearch.github.io/xformers/components/attentions.html
 ### Scaled Dot Product Attention
 model_sdp_attn = replace_attn_with_xformers_one(model, ScaledDotProduct)
+
+# Define input
+input = torch.randn(1, 3, 224, 224)
+
+# Warm up
+for _ in range(10):
+    model_sdp_attn(input.to(device))
+
+# Inference
+inference_times = []
+with torch.no_grad():
+    for _ in range(100):
+        torch.cuda.synchronize()
+        start = time.time()
+        model_sdp_attn(input.to(device))
+        end = time.time()
+        torch.cuda.synchronize()
+        inference_times.append((end - start) * 1000)
+
+print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
