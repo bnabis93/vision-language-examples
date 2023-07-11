@@ -6,4 +6,3 @@ env:
 
 setup:
 	pip install -r requirements.txt
-	conda install xformers -c xformers

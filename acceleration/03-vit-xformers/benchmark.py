@@ -12,6 +12,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 if device == "cpu":
     print("This code only supports GPU.")
     exit(-1)
+print(f"Device : {device}")
 
 # Get a reference ViT model
 model = timm.create_model("vit_base_patch16_224", pretrained=True)
