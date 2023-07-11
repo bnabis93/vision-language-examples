@@ -25,7 +25,12 @@ conda activate 03-vit-xformers
 make setup
 ```
 
+### Benchmark
+```
+python benchmark.py
+```
 
 ## Reference
 - https://github.com/facebookresearch/xformers
 - https://facebookresearch.github.io/xformers/what_is_xformers.html
+- https://github.com/facebookresearch/xformers/blob/main/docs/source/vision_transformers.ipynb
