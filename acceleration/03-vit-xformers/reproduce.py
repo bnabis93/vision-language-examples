@@ -1,4 +1,5 @@
 import copy
+import time
 import torch
 from torch import nn
 from torch.utils import benchmark
@@ -168,7 +169,7 @@ model_sparse = replace_attn_with_xformers_one(model_sparse, mask)
 model_memory_efficient = replace_attn_with_xformers_one(
     model_memory_efficient, att_mask=None, mem_effi=True
 )
-i = torch.rand(64, 3, img_size, img_size).cuda()
+i = torch.rand(1, 3, img_size, img_size).cuda()
 
 print("ViT Forward only")
 profile_model(lambda: model(i))
@@ -178,3 +179,42 @@ profile_model(lambda: model_sparse(i))
 
 print("Mem efficient ViT Forward only")
 profile_model(lambda: model_memory_efficient(i))
+
+
+inference_times = []
+with torch.no_grad():
+    for _ in range(100):
+        torch.cuda.synchronize()
+        start = time.time()
+        model(i)
+        end = time.time()
+        torch.cuda.synchronize()
+        inference_times.append((end - start) * 1000)
+
+print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
+
+
+inference_times = []
+with torch.no_grad():
+    for _ in range(100):
+        torch.cuda.synchronize()
+        start = time.time()
+        model_sparse(i)
+        end = time.time()
+        torch.cuda.synchronize()
+        inference_times.append((end - start) * 1000)
+
+print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
+
+
+inference_times = []
+with torch.no_grad():
+    for _ in range(100):
+        torch.cuda.synchronize()
+        start = time.time()
+        model_memory_efficient(i)
+        end = time.time()
+        torch.cuda.synchronize()
+        inference_times.append((end - start) * 1000)
+
+print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
