@@ -4,7 +4,10 @@ from torch import nn
 from torch.utils import benchmark
 
 import xformers.components.attention.attention_patterns as AP
-from xformers.components.attention.core import scaled_dot_product_attention
+from xformers.components.attention.core import (
+    scaled_dot_product_attention,
+    memory_efficient_attention,
+)
 from xformers.components.attention._sputnik_sparse import SparseCS
 
 import timm
@@ -66,12 +69,53 @@ class Attention(torch.nn.Module):
         return x
 
 
-def replace_attn_with_xformers_one(module, att_mask):
+class MemEffiAttention(torch.nn.Module):
+    def __init__(
+        self,
+        dim,
+        num_heads=8,
+        qkv_bias=False,
+        attn_drop=0.0,
+        proj_drop=0.0,
+    ):
+        super().__init__()
+        self.num_heads = num_heads
+
+        self.qkv = torch.nn.Linear(dim, dim * 3, bias=qkv_bias)
+        self.attn_drop = torch.nn.Dropout(attn_drop)
+        self.proj = torch.nn.Linear(dim, dim)
+        self.proj_drop = torch.nn.Dropout(proj_drop)
+
+    def forward(self, x):
+        B, N, C = x.shape
+        qkv = (
+            self.qkv(x)
+            .reshape(B, N, 3, self.num_heads, C // self.num_heads)
+            .permute(2, 0, 3, 1, 4)
+        )
+
+        qkv = qkv.flatten(1, 2)
+
+        q, k, v = qkv.unbind()
+
+        x = memory_efficient_attention(q, k, v, dropout=self.attn_drop)
+        x = x.reshape(B, self.num_heads, N, C // self.num_heads)
+
+        x = x.transpose(1, 2).reshape(B, N, C)
+        x = self.proj(x)
+        x = self.proj_drop(x)
+        return x
+
+
+def replace_attn_with_xformers_one(module, att_mask, mem_effi=False):
     module_output = module
     if isinstance(module, timm.models.vision_transformer.Attention):
         qkv = module.qkv
         dim = qkv.weight.shape[1] * module.num_heads
-        module_output = Attention(dim, module.num_heads, attn_mask=att_mask)
+        if mem_effi:
+            module_output = MemEffiAttention(dim, module.num_heads)
+        else:
+            module_output = Attention(dim, module.num_heads, attn_mask=att_mask)
     for name, child in module.named_children():
         module_output.add_module(name, replace_attn_with_xformers_one(child, att_mask))
     del module
@@ -93,6 +137,7 @@ model = VisionTransformer(
 ).cuda()
 
 model_sparse = copy.deepcopy(model)
+model_memory_efficient = copy.deepcopy(model)
 
 
 H, W = img_size // patch_size, img_size // patch_size
@@ -120,6 +165,9 @@ print(1 - mask.values.shape[1] / (mask.shape[0] * mask.shape[1]))
 
 
 model_sparse = replace_attn_with_xformers_one(model_sparse, mask)
+model_memory_efficient = replace_attn_with_xformers_one(
+    model_memory_efficient, att_mask=None, mem_effi=True
+)
 i = torch.rand(64, 3, img_size, img_size).cuda()
 
 print("ViT Forward only")
@@ -128,4 +176,5 @@ profile_model(lambda: model(i))
 print("Sparse ViT Forward only")
 profile_model(lambda: model_sparse(i))
 
-print(f"Sparsity: {1 - mask.float().mean().item()}, nnz={num_non_zeros}")
+print("Mem efficient ViT Forward only")
+profile_model(lambda: model_memory_efficient(i))
