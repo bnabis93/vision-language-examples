@@ -1,29 +1,21 @@
 import timm
-from timm.models.vision_transformer import VisionTransformer
+from xformers.components.attention import ScaledDotProduct
 from xformers.helpers.timm_sparse_attention import TimmSparseAttention
-import torch
 import torch.nn as nn
+import torch
 
+# Define global variables
 img_size = 224
 patch_size = 16
+torch.backends.cudnn.benchmark = True
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+if device == "cpu":
+    print("This code only supports GPU.")
+    exit(-1)
 
 # Get a reference ViT model
-model = VisionTransformer(
-    img_size=img_size,
-    patch_size=patch_size,
-    embed_dim=96,
-    depth=8,
-    num_heads=8,
-    mlp_ratio=3.0,
-    qkv_bias=False,
-    norm_layer=nn.LayerNorm,
-).cuda()
-
-
-# Define the mask that we want to use
-# We suppose in this snipper that you have a precise mask in mind already
-# but several helpers and examples are proposed in  `xformers.components.attention.attention_patterns`
-my_fancy_mask: torch.Tensor  # This would be for you to define
+model = timm.create_model("vit_base_patch16_224", pretrained=True)
+model = model.to(device)
 
 # Define a recursive monkey patching function
 def replace_attn_with_xformers_one(module, att_mask):
@@ -41,4 +33,6 @@ def replace_attn_with_xformers_one(module, att_mask):
 
 
 # Now we can just patch our reference model, and get a sparse-aware variation
-model = replace_attn_with_xformers_one(model, my_fancy_mask)
+## Attention: https://facebookresearch.github.io/xformers/components/attentions.html
+### Scaled Dot Product Attention
+model_sdp_attn = replace_attn_with_xformers_one(model, ScaledDotProduct)
