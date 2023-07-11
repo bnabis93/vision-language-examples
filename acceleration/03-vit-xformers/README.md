@@ -17,6 +17,14 @@
     - Using Triton for some optimized parts, explicit, pythonic and user-accessible
     - Supportted various Activation Functions. 
 
+## Benchmark
+### Setup
+```
+make env
+conda activate 03-vit-xformers
+make setup
+```
+
 
 ## Reference
 - https://github.com/facebookresearch/xformers
