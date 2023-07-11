@@ -5,11 +5,9 @@ from torch import nn
 from torch.utils import benchmark
 
 import xformers.components.attention.attention_patterns as AP
-from xformers.components.attention.core import (
-    scaled_dot_product_attention,
-    memory_efficient_attention,
-)
+from xformers.components.attention.core import scaled_dot_product_attention
 from xformers.components.attention._sputnik_sparse import SparseCS
+from xformers.ops import memory_efficient_attention
 
 import timm
 from timm.models.vision_transformer import VisionTransformer
