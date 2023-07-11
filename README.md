@@ -10,6 +10,8 @@ Vision-lanugage model example code.
 ## Acceleration
 - [00-vit-baseline](acceleration/00-vit-baseline)
 - [01-vit-tensorrt](acceleration/01-vit-tensorrt)
+- [02-vit-faster-transformer](acceleration/02-vit-faster-transformer)
+- [03-vit-xformers](acceleration/03-vit-xformers)
 
 ## Embedding
 - [00-openai-text-embedding](embedding/00-openai-text-embedding)
