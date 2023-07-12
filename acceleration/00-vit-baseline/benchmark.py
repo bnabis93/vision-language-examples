@@ -17,21 +17,23 @@ model = timm.create_model("vit_base_patch16_224", pretrained=True)
 model = model.to(device)
 
 # Define input
-input = torch.randn(1, 3, 224, 224)
+batch_sizes = [1, 2, 4, 8, 16, 32, 64]
+for batch in batch_sizes:
+    input = torch.randn(batch, 3, 224, 224)
 
-# Warm up
-for _ in range(10):
-    model(input.to(device))
-
-# Inference
-inference_times = []
-with torch.no_grad():
-    for _ in range(100):
-        torch.cuda.synchronize()
-        start = time.time()
+    # Warm up
+    for _ in range(10):
         model(input.to(device))
-        end = time.time()
-        torch.cuda.synchronize()
-        inference_times.append((end - start) * 1000)
 
-print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms" )
+    # Inference
+    inference_times = []
+    with torch.no_grad():
+        for _ in range(100):
+            torch.cuda.synchronize()
+            start = time.time()
+            model(input.to(device))
+            end = time.time()
+            torch.cuda.synchronize()
+            inference_times.append((end - start) * 1000)
+
+    print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
