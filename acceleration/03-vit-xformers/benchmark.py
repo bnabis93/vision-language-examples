@@ -95,7 +95,7 @@ with torch.no_grad():
     for _ in range(100):
         torch.cuda.synchronize()
         start = time.time()
-        model_sparse(img)
+        model(img)
         torch.cuda.synchronize()
         end = time.time()
         inference_times.append((end - start) * 1000)
@@ -112,4 +112,6 @@ with torch.no_grad():
         end = time.time()
         inference_times.append((end - start) * 1000)
 
-print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
+print(
+    f"Sparse ViT average inference time : {sum(inference_times)/len(inference_times)}ms"
+)

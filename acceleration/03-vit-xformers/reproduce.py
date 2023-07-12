@@ -202,7 +202,9 @@ with torch.no_grad():
         end = time.time()
         inference_times.append((end - start) * 1000)
 
-print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
+print(
+    f"Sparse ViT average inference time : {sum(inference_times)/len(inference_times)}ms"
+)
 
 
 inference_times = []
@@ -215,4 +217,6 @@ with torch.no_grad():
         end = time.time()
         inference_times.append((end - start) * 1000)
 
-print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
+print(
+    f"mem efficient ViT average inference time : {sum(inference_times)/len(inference_times)}ms"
+)
