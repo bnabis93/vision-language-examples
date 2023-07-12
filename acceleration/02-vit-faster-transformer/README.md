@@ -55,14 +55,20 @@ export NVIDIA_TF32_OVERRIDE=0
 
 ### TensorRT Plugin
 ```
+# Get ViT weight file
+cd $WORKSPACE/examples/pytorch/vit/ViT-quantization
+wget https://storage.googleapis.com/vit_models/imagenet21k+imagenet2012/ViT-B_16.npz
+
 #FP32 engine build & infer
+cd $WORKSPACE/examples/tensorrt/vit
+export NVIDIA_TF32_OVERRIDE=0
 python infer_visiontransformer_plugin.py \
   --model_type=ViT-B_16 \
-  --img_size=384 \
+  --img_size=224 \
   --pretrained_dir=$WORKSPACE/examples/pytorch/vit/ViT-quantization/ViT-B_16.npz \
   --plugin_path=../../../build/lib/libvit_plugin.so \
-  --batch-size=32 
-  
+  --batch-size=8
+
 ```
 
 
@@ -71,13 +77,30 @@ python infer_visiontransformer_plugin.py \
 - CPU: AMD EPYC Processor (with IBPB)
 - GPU: A100 x1
 
-### Results
+## Results
+### Pytorch
 - Batch size=1: `FT-CPP-time 4.79 ms (100 iterations)`
 - Batch size=4: `FT-CPP-time 10.73 ms (100 iterations)`
 - Batch size=8: `FT-CPP-time 20.21 ms (100 iterations)`
 - Batch size=16: `FT-CPP-time 37.83 ms (100 iterations)`
 - Batch size=32: `FT-CPP-time 73.12 ms (100 iterations)`
 
+### TensorRT
+- Batch size=1
+    - plugin time :  4.7725653648376465 ms
+    - torch time :  5.4483866691589355 ms
+- Batch size=4
+    - plugin time :  10.72922945022583 ms
+    - torch time :  11.971831321716309 ms
+- Batch size=8
+    - plugin time :  20.211186408996582 ms
+    - torch time :  20.98031759262085 ms
+- Batch size=16
+    - plugin time :  37.80216932296753 ms
+    - torch time :  40.00376224517822 ms
+- Batch size=32
+    - plugin time :  73.12519073486328 ms
+    - torch time :  73.00717830657959 ms
 
 ## Issue
 - fastertransformer speed slower than pytorch #325: https://github.com/NVIDIA/FasterTransformer/issues/325
