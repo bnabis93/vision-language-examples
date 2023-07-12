@@ -185,8 +185,8 @@ with torch.no_grad():
         torch.cuda.synchronize()
         start = time.time()
         model(i)
-        end = time.time()
         torch.cuda.synchronize()
+        end = time.time()
         inference_times.append((end - start) * 1000)
 
 print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
@@ -198,11 +198,13 @@ with torch.no_grad():
         torch.cuda.synchronize()
         start = time.time()
         model_sparse(i)
-        end = time.time()
         torch.cuda.synchronize()
+        end = time.time()
         inference_times.append((end - start) * 1000)
 
-print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
+print(
+    f"Sparse ViT average inference time : {sum(inference_times)/len(inference_times)}ms"
+)
 
 
 inference_times = []
@@ -211,8 +213,10 @@ with torch.no_grad():
         torch.cuda.synchronize()
         start = time.time()
         model_memory_efficient(i)
-        end = time.time()
         torch.cuda.synchronize()
+        end = time.time()
         inference_times.append((end - start) * 1000)
 
-print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
+print(
+    f"mem efficient ViT average inference time : {sum(inference_times)/len(inference_times)}ms"
+)

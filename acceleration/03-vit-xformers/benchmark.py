@@ -18,19 +18,6 @@ if device == "cpu":
     exit(-1)
 print(f"Device : {device}")
 
-# Model profilers
-def profile_model(fn, min_run_time=2):
-    torch.cuda.reset_peak_memory_stats()
-    torch.cuda.synchronize()
-    res = benchmark.Timer(
-        stmt="fn()", globals={"fn": fn}, label="profile", sub_label="", description=""
-    ).blocked_autorange(min_run_time=min_run_time)
-    torch.cuda.synchronize()
-    memory = torch.cuda.max_memory_allocated() / 2**20
-    memory = f"Memory used: {memory} MB"
-    print(res)
-    print(memory)
-
 
 # Get Sparse Attention mask
 def get_sparse_attention_mask(img_size: int, patch_size: int, sparsity: float = 0.97):
@@ -83,9 +70,32 @@ sparse_attn = get_sparse_attention_mask(img_size, patch_size, sparsity=0.97)
 sparse_attn = SparseCS(sparse_attn, torch.device("cuda"))
 model_sparse = replace_attn_with_xformers_one(model_sparse, sparse_attn)
 
-img = torch.rand(batch_size, 3, img_size, img_size).cuda()
-print("Benchmarking ViT")
-profile_model(lambda: model(img))
+img = torch.rand(batch_size, 3, img_size, img_size)
+for _ in range(10):
+    model(img.to(device))
 
-print("Benchmarking Sparse ViT")
-profile_model(lambda: model_sparse(img))
+inference_times = []
+with torch.no_grad():
+    for _ in range(100):
+        torch.cuda.synchronize()
+        start = time.time()
+        model(img.to(device))
+        torch.cuda.synchronize()
+        end = time.time()
+        inference_times.append((end - start) * 1000)
+
+print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
+
+inference_times = []
+with torch.no_grad():
+    for _ in range(100):
+        torch.cuda.synchronize()
+        start = time.time()
+        model_sparse(img.to(device))
+        torch.cuda.synchronize()
+        end = time.time()
+        inference_times.append((end - start) * 1000)
+
+print(
+    f"Sparse ViT average inference time : {sum(inference_times)/len(inference_times)}ms"
+)

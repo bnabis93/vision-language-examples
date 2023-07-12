@@ -56,29 +56,29 @@ Memory used: 791.16748046875 MB
 python reproduce.py
 
 ViT Forward only
-<torch.utils.benchmark.utils.common.Measurement object at 0x7fe7d59c9780>
+<torch.utils.benchmark.utils.common.Measurement object at 0x7fb48d415720>
 profile
-  Median: 3.87 ms
-  IQR:    0.26 ms (3.76 to 4.02)
-  514 measurements, 1 runs per measurement, 1 thread
-Memory used: 28.87548828125 MB
+  Median: 3.64 ms
+  IQR:    0.06 ms (3.60 to 3.66)
+  552 measurements, 1 runs per measurement, 1 thread
+Memory used: 28.876953125 MB
 Sparse ViT Forward only
-<torch.utils.benchmark.utils.common.Measurement object at 0x7fe803ea64a0>
+<torch.utils.benchmark.utils.common.Measurement object at 0x7fb4bb8f2440>
 profile
-  Median: 9.33 ms
-  IQR:    0.21 ms (9.31 to 9.51)
-  22 measurements, 10 runs per measurement, 1 thread
-Memory used: 32.49267578125 MB
+  Median: 8.77 ms
+  IQR:    0.24 ms (8.75 to 8.99)
+  23 measurements, 10 runs per measurement, 1 thread
+Memory used: 32.525390625 MB
 Mem efficient ViT Forward only
-<torch.utils.benchmark.utils.common.Measurement object at 0x7fe803de7c10>
+<torch.utils.benchmark.utils.common.Measurement object at 0x7fb48d3dfbb0>
 profile
-  Median: 6.34 ms
-  IQR:    0.08 ms (6.31 to 6.39)
-  315 measurements, 1 runs per measurement, 1 thread
-Memory used: 266.49072265625 MB
-ViT average inference time : 3.186824321746826ms
-ViT average inference time : 8.32324504852295ms
-ViT average inference time : 5.165774822235107ms
+  Median: 5.66 ms
+  IQR:    0.16 ms (5.62 to 5.79)
+  349 measurements, 1 runs per measurement, 1 thread
+Memory used: 266.4921875 MB
+ViT average inference time : 3.2400870323181152ms
+ViT average inference time : 8.093669414520264ms
+ViT average inference time : 4.916293621063232ms
 ```
 
 ## Reference
