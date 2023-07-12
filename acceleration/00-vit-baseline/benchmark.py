@@ -36,4 +36,4 @@ for batch in batch_sizes:
             torch.cuda.synchronize()
             inference_times.append((end - start) * 1000)
 
-    print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
+    print(f"batch size :{batch}\nViT average inference time : {sum(inference_times)/len(inference_times)}ms")
