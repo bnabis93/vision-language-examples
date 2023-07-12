@@ -7,7 +7,7 @@ import time
 
 # Define global variables
 torch.backends.cudnn.benchmark = True
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 if device == "cpu":
     print("This code only supports GPU.")
     exit(-1)
@@ -32,8 +32,8 @@ for batch in batch_sizes:
             torch.cuda.synchronize()
             start = time.time()
             model(input.to(device))
-            end = time.time()
             torch.cuda.synchronize()
+            end = time.time()
             inference_times.append((end - start) * 1000)
 
     print(f"batch size :{batch}\nViT average inference time : {sum(inference_times)/len(inference_times)}ms")
