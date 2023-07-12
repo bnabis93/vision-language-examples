@@ -1,5 +1,9 @@
 # Acceleration
 Methods for transformer acceleration.
+- [00-vit-baseline](00-vit-baseline)
+- [01-vit-tensorrt](01-vit-tensorrt)
+- [02-vit-faster-transformer](02-vit-faster-transformer)
+- [03-vit-xformers](03-vit-xformers)
 
 ## Benchmark results
 - xFormers has a inference speed degradation in A100 GPU.
