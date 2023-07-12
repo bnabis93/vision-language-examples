@@ -5,12 +5,16 @@ Methods for transformer acceleration.
 - xFormers has a inference speed degradation in A100 GPU.
 - https://github.com/bnabis93/vision-language-examples/issues/14
 
+### FP32
 |                                 | batch size=1 | batch size=4 | batch size=8 | batch size=16 | batch size=32 |
 |---------------------------------|--------------|--------------|--------------|---------------|---------------|
 | Baseline (Pytorch)              | 5.244 ms     | 10.941 ms    | 19.585 ms    | 37.013 ms     | 68.042 ms    |
 | TensorRT                        | 1.695 ms     | 4.428 ms     | 7.357 ms     | 13.899 ms     | 26.751 ms     |
 | FasterTransformer               | 4.79 ms      | 10.73 ms     | 20.21 ms     | 37.83 ms      | 73.12 ms      |
 | FasterTransformer w/ trt plugin | 4.772 ms     | 10.729 ms    | 20.211 ms    | 37.802 ms     | 73.125 ms     |
+
+### FP16
+
 
 ## Contents
 ### TensorRT (Nvidia)

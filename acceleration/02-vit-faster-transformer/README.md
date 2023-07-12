@@ -37,7 +37,7 @@ cmake -DSM=xx -DCMAKE_BUILD_TYPE=Release -DBUILD_PYT=ON -DBUILD_TRT=ON ..
 make -j12
 ```
 
-### Run
+### Run ViT on C++
 - Run ViT on binary file.
 - Firstly we use ./bin/vit_gemm as the tool to search the best GEMM configuration. And then run ./bin/vit_example
 ```
@@ -56,6 +56,24 @@ export NVIDIA_TF32_OVERRIDE=0
 ./bin/vit_gemm 1 224 16 768 12 1 1 0
 ./bin/vit_example 1 224 16 768 12 12 1 1
 ```
+
+### Run ViT on Pytorch
+```
+cd $WORKSPACE/examples/pytorch/vit/ViT-quantization
+wget https://storage.googleapis.com/vit_models/imagenet21k+imagenet2012/ViT-B_16.npz
+pip install ml_collections
+
+cd $WORKSPACE/examples/pytorch/vit
+export NVIDIA_TF32_OVERRIDE=0
+
+python infer_visiontransformer_op.py \
+  --model_type=ViT-B_16  \
+  --img_size=224 \
+  --pretrained_dir=./ViT-quantization/ViT-B_16.npz \
+  --batch-size=1 \
+  --th-path=$WORKSPACE/build/lib/libth_transformer.so
+```
+
 
 ### TensorRT Plugin
 ```
@@ -105,6 +123,21 @@ FP16
 - Batch size=8: `FT-CPP-time 2.80 ms (100 iterations)`
 - Batch size=16: `FT-CPP-time 4.64 ms (100 iterations)`
 - Batch size=32: `FT-CPP-time 8.64 ms (100 iterations)`
+
+### Run ViT on pytorch op
+FP32
+- Batch size=1: `5.122 ms`
+- Batch size=4: `10.796 ms`
+- Batch size=8: `20.331 ms`
+- Batch size=16: `37.923 ms`
+- Batch size=32: `73.225 ms`
+
+FP16
+- Batch size=1: `1.425 ms`
+- Batch size=4: `2.089 ms`
+- Batch size=8: `2.971 ms`
+- Batch size=16: `4.847 ms`
+- Batch size=32: `9.082 ms`
 
 ### TensorRT plugin
 - fastertransformer speed slower than pytorch : https://github.com/NVIDIA/FasterTransformer/issues/325

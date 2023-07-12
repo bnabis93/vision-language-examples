@@ -106,3 +106,5 @@ make benchmark-fp16
 - Batch size=16: `mean = 6.39221 ms (10 iterations)`
 - Batch size=32: `mean = 12.4785 ms (10 iterations)`
 - Batch size=64: `mean = 24.2022 ms (10 iterations)`
+- Batch size=256: `mean = 88.7347 ms (10 iterations)`
+- Batch size=512: `mean = 176.361 ms (10 iterations)`

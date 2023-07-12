@@ -41,17 +41,23 @@ ViT average inference time : 131.94079399108887ms
 ### FP16
 ```
 batch size :1
-ViT average inference time : 4.396250247955322ms
+ViT average inference time : 4.308726787567139ms
 batch size :2
-ViT average inference time : 4.443643093109131ms
+ViT average inference time : 4.269990921020508ms
 batch size :4
-ViT average inference time : 4.431216716766357ms
+ViT average inference time : 4.266459941864014ms
 batch size :8
-ViT average inference time : 5.017030239105225ms
+ViT average inference time : 4.643599987030029ms
 batch size :16
-ViT average inference time : 5.442163944244385ms
+ViT average inference time : 5.297105312347412ms
 batch size :32
-ViT average inference time : 9.307048320770264ms
+ViT average inference time : 9.313437938690186ms
 batch size :64
-ViT average inference time : 17.756431102752686ms
+ViT average inference time : 17.998650074005127ms
+batch size :128
+ViT average inference time : 35.26674509048462ms
+batch size :256
+ViT average inference time : 69.79572057723999ms
+batch size :512
+ViT average inference time : 140.56599617004395ms
 ```
