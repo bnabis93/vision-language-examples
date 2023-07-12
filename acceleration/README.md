@@ -1,6 +1,10 @@
 # Acceleration
 Methods for transformer acceleration.
 
+## Benchmark results
+- xFormers has a inference speed degradation in A100 GPU.
+- https://github.com/bnabis93/vision-language-examples/issues/14
+
 |                    | batch size=1 | batch size=4 | batch size=8 | batch size=16 | batch size=32 |
 |--------------------|--------------|--------------|--------------|---------------|---------------|
 | Baseline (Pytorch) | 12.456 ms    | 26.858 ms    | 47.407 ms    | 93.633 ms     | 171.224 ms    |
