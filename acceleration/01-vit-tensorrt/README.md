@@ -2,6 +2,7 @@
 - Docker
 
 ## Export trt model
+### FP32 model
 ```
 make convert-trt
 ...
@@ -15,6 +16,12 @@ make convert-trt
 &&&& PASSED TensorRT.trtexec [TensorRT v8601] # trtexec --onnx=./output/model.onnx --minShapes=input0:1x3x224x224 --optShapes=input0:1x3x224x224 --maxShapes=input0:64x3x224x224 --explicitBatch --saveEngine=./output/model.plan
 ...
 ```
+### FP16 model
+```
+
+```
+
+
 ## If you want to check onnx input output name.
 ```
 pip install onnx
@@ -47,6 +54,7 @@ make benchmark
 ```
 
 ## Results
+### FP32
 - Batch size=1: `mean = 1.69581 ms (10 iterations)`
 - Batch size=2: `mean = 2.72586 ms (10 iterations)`
 - Batch size=4: `mean = 4.42871 ms (10 iterations)`
@@ -54,3 +62,5 @@ make benchmark
 - Batch size=16: `mean = 13.8995 ms (10 iterations)`
 - Batch size=32: `mean = 26.7512 ms (10 iterations)`
 - Batch size=64: `mean = 52.3231 ms (10 iterations)`
+
+### FP16
