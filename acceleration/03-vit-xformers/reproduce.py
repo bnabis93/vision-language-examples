@@ -168,53 +168,55 @@ model_memory_efficient = replace_attn_with_xformers_one(
 )
 i = torch.rand(1, 3, img_size, img_size).cuda()
 
-# Autocast to fp16
-with torch.autocast(device_type="cuda", dtype=torch.float16):
-    print("ViT Forward only")
-    profile_model(lambda: model(i))
-    print("Sparse ViT Forward only")
-    profile_model(lambda: model_sparse(i))
-    print("Mem efficient ViT Forward only")
-    profile_model(lambda: model_memory_efficient(i))
+# Half
+model.half()
+model_sparse.half()
+model_memory_efficient.half()
+i = i.half()
+
+
+print("ViT Forward only")
+profile_model(lambda: model(i))
+print("Sparse ViT Forward only")
+profile_model(lambda: model_sparse(i))
+print("Mem efficient ViT Forward only")
+profile_model(lambda: model_memory_efficient(i))
 
 
 inference_times = []
 with torch.no_grad():
-    with torch.autocast(device_type="cuda", dtype=torch.float16):
-        for _ in range(100):
-            torch.cuda.synchronize()
-            start = time.time()
-            model(i)
-            end = time.time()
-            torch.cuda.synchronize()
-            inference_times.append((end - start) * 1000)
+    for _ in range(100):
+        torch.cuda.synchronize()
+        start = time.time()
+        model(i)
+        end = time.time()
+        torch.cuda.synchronize()
+        inference_times.append((end - start) * 1000)
 
 print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
 
 
 inference_times = []
 with torch.no_grad():
-    with torch.autocast(device_type="cuda", dtype=torch.float16):
-        for _ in range(100):
-            torch.cuda.synchronize()
-            start = time.time()
-            model_sparse(i)
-            end = time.time()
-            torch.cuda.synchronize()
-            inference_times.append((end - start) * 1000)
+    for _ in range(100):
+        torch.cuda.synchronize()
+        start = time.time()
+        model_sparse(i)
+        end = time.time()
+        torch.cuda.synchronize()
+        inference_times.append((end - start) * 1000)
 
 print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
 
 
 inference_times = []
 with torch.no_grad():
-    with torch.autocast(device_type="cuda", dtype=torch.float16):
-        for _ in range(100):
-            torch.cuda.synchronize()
-            start = time.time()
-            model_memory_efficient(i)
-            end = time.time()
-            torch.cuda.synchronize()
-            inference_times.append((end - start) * 1000)
+    for _ in range(100):
+        torch.cuda.synchronize()
+        start = time.time()
+        model_memory_efficient(i)
+        end = time.time()
+        torch.cuda.synchronize()
+        inference_times.append((end - start) * 1000)
 
 print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
