@@ -6,7 +6,11 @@ convert-trt:
 		--rm nvcr.io/nvidia/pytorch:23.06-py3 \
 		/bin/bash -c "pip install timm onnxruntime-gpu && python src/onnx_export.py && \
 			trtexec --onnx=./output/model.onnx \
-					--saveEngine=./output/model.trt"
+					--minShapes=input:1x3x224x224 \
+					--optShapes=input:1x3x224x224 \
+					--maxShapes=input:64x3x1024x1024 \
+					--explicitBatch \
+					--saveEngine=./output/model.plan"
 
 benchmark:
 	docker run --gpus device=0 -it \

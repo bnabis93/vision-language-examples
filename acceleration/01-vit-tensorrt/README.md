@@ -25,3 +25,12 @@ make benchmark
 ...
 ...
 ```
+
+## Results
+- Batch size=1: `1.69581 ms (10 iterations)`
+- Batch size=2: `1.71159 ms ms (10 iterations)`
+- Batch size=4: `1.67822 ms (10 iterations)`
+- Batch size=8: `1.69185 ms (10 iterations)`
+- Batch size=16: `1.70547 ms (10 iterations)`
+- Batch size=32: `1.69955 ms (10 iterations)`
+- Batch size=64: `1.75058 ms (10 iterations)`
