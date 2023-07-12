@@ -18,4 +18,4 @@ benchmark:
 		--rm nvcr.io/nvidia/pytorch:23.06-py3 \
 		/bin/bash -c "trtexec \
 			--loadEngine=./output/model.plan \
-			--shapes=input0:64x3x224x224"
+			--shapes=input0:32x3x224x224"
