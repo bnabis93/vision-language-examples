@@ -53,6 +53,19 @@ export NVIDIA_TF32_OVERRIDE=0
 ./bin/vit_example 1 224 16 768 12 12 1 0
 ```
 
+### TensorRT Plugin
+```
+#FP32 engine build & infer
+python infer_visiontransformer_plugin.py \
+  --model_type=ViT-B_16 \
+  --img_size=384 \
+  --pretrained_dir=$WORKSPACE/examples/pytorch/vit/ViT-quantization/ViT-B_16.npz \
+  --plugin_path=../../../build/lib/libvit_plugin.so \
+  --batch-size=32 
+  
+```
+
+
 ## Experiment
 ### Server
 - CPU: AMD EPYC Processor (with IBPB)
