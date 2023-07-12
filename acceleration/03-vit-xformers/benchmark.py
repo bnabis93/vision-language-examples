@@ -89,3 +89,27 @@ profile_model(lambda: model(img))
 
 print("Benchmarking Sparse ViT")
 profile_model(lambda: model_sparse(img))
+
+inference_times = []
+with torch.no_grad():
+    for _ in range(100):
+        torch.cuda.synchronize()
+        start = time.time()
+        model_sparse(img)
+        torch.cuda.synchronize()
+        end = time.time()
+        inference_times.append((end - start) * 1000)
+
+print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
+
+inference_times = []
+with torch.no_grad():
+    for _ in range(100):
+        torch.cuda.synchronize()
+        start = time.time()
+        model_sparse(img)
+        torch.cuda.synchronize()
+        end = time.time()
+        inference_times.append((end - start) * 1000)
+
+print(f"ViT average inference time : {sum(inference_times)/len(inference_times)}ms")
