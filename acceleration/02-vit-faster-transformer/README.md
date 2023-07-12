@@ -85,7 +85,8 @@ python infer_visiontransformer_plugin.py \
 - Batch size=16: `FT-CPP-time 37.83 ms (100 iterations)`
 - Batch size=32: `FT-CPP-time 73.12 ms (100 iterations)`
 
-### TensorRT
+### TensorRT plugin
+- There's almost no difference.
 - Batch size=1
     - plugin time :  4.7725653648376465 ms
     - torch time :  5.4483866691589355 ms
