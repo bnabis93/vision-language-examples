@@ -134,6 +134,7 @@ model = VisionTransformer(
     qkv_bias=False,
     norm_layer=nn.LayerNorm,
 ).cuda()
+model = model.half()
 
 model_sparse = copy.deepcopy(model)
 model_memory_efficient = copy.deepcopy(model)
