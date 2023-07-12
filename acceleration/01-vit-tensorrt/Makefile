@@ -4,7 +4,7 @@ convert-trt:
 		-v $(CURDIR):/workspace/src \
 		-v $(CURDIR)/output:/workspace/output \
 		--rm nvcr.io/nvidia/pytorch:23.06-py3 \
-		/bin/bash -c "pip install timm onnxruntime-gpu && python src/onnx_export.py && \
+		/bin/bash -c "pip install timm onnx onnxruntime-gpu && python src/onnx_export.py && python src/check_onnx.py && \
 			trtexec --onnx=./output/model.onnx \
 					--minShapes=input:1x3x224x224 \
 					--optShapes=input:1x3x224x224 \
