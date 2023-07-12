@@ -4,7 +4,27 @@
 ## Export trt model
 ```
 make convert-trt
+...
+...
+[07/12/2023-13:33:21] [I] Total Host Walltime: 3.00537 s
+[07/12/2023-13:33:21] [I] Total GPU Compute Time: 2.98397 s
+[07/12/2023-13:33:21] [W] * GPU compute time is unstable, with coefficient of variance = 6.08549%.
+[07/12/2023-13:33:21] [W]   If not already in use, locking GPU clock frequency or adding --useSpinWait may improve the stability.
+[07/12/2023-13:33:21] [I] Explanations of the performance metrics are printed in the verbose logs.
+[07/12/2023-13:33:21] [I]
+&&&& PASSED TensorRT.trtexec [TensorRT v8601] # trtexec --onnx=./output/model.onnx --minShapes=input0:1x3x224x224 --optShapes=input0:1x3x224x224 --maxShapes=input0:64x3x224x224 --explicitBatch --saveEngine=./output/model.plan
+...
 ```
+## If you want to check onnx input output name.
+```
+pip install onnx
+python check_onnx.py
+
+# Check_onnx.py (For get input and output name)
+Inputs:  ['input0']
+Outputs:  ['output0']
+```
+
 
 ## Benchmark
 - GPU: A100
@@ -27,10 +47,10 @@ make benchmark
 ```
 
 ## Results
-- Batch size=1: `1.69581 ms (10 iterations)`
-- Batch size=2: `1.71159 ms ms (10 iterations)`
-- Batch size=4: `1.67822 ms (10 iterations)`
-- Batch size=8: `1.69185 ms (10 iterations)`
-- Batch size=16: `1.70547 ms (10 iterations)`
-- Batch size=32: `1.69955 ms (10 iterations)`
-- Batch size=64: `1.75058 ms (10 iterations)`
+- Batch size=1: `mean = 1.69581 ms (10 iterations)`
+- Batch size=2: `mean = 2.72586 ms (10 iterations)`
+- Batch size=4: `mean = 4.42871 ms (10 iterations)`
+- Batch size=8: `mean = 7.35761 ms (10 iterations)`
+- Batch size=16: `mean = 13.8995 ms (10 iterations)`
+- Batch size=32: `mean = 26.7512 ms (10 iterations)`
+- Batch size=64: `mean = 52.3231 ms (10 iterations)`
