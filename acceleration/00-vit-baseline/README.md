@@ -16,8 +16,6 @@ ViT average inference time : 4.16447639465332ms
 ```
 
 ## Results
-- fastertransformer speed slower than pytorch : https://github.com/NVIDIA/FasterTransformer/issues/325
-- [Recommendation] Use fp16 / bf16 model than fp32.
 ```
 batch size :1
 ViT average inference time : 5.244340896606445ms

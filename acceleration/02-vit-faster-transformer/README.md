@@ -86,6 +86,8 @@ python infer_visiontransformer_plugin.py \
 - Batch size=32: `FT-CPP-time 73.12 ms (100 iterations)`
 
 ### TensorRT plugin
+- fastertransformer speed slower than pytorch : https://github.com/NVIDIA/FasterTransformer/issues/325
+- [Recommendation] Use fp16 / bf16 model than fp32.
 - There's almost no difference.
 - Batch size=1
     - plugin time :  4.7725653648376465 ms
@@ -102,9 +104,6 @@ python infer_visiontransformer_plugin.py \
 - Batch size=32
     - plugin time :  73.12519073486328 ms
     - torch time :  73.00717830657959 ms
-
-## Issue
-- fastertransformer speed slower than pytorch #325: https://github.com/NVIDIA/FasterTransformer/issues/325
 
 ## Reference
 - https://github.com/NVIDIA/FasterTransformer/blob/main/docs/QAList.md
