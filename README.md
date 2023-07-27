@@ -27,3 +27,4 @@ Vision-lanugage model example code.
 
 ## Diffusion
 - [01-diffusers-quick-start](diffusion/01-diffusers-quick-start)
+- [02-hack-diffusers-pipeline](diffusion/02-hack-diffusers-pipeline)
