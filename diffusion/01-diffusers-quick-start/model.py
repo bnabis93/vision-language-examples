@@ -43,7 +43,7 @@ print("Sample size: ", noisy_sample.shape)
 
 # Inference
 model.to("cuda")
-noisy_sample.to("cuda")
+noisy_sample = noisy_sample.to("cuda")
 sample = noisy_sample
 for i, t in enumerate(tqdm.tqdm(scheduler.timesteps)):
     with torch.no_grad():

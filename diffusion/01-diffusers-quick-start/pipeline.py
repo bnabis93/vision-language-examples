@@ -1,6 +1,8 @@
 """Diffusers inference example
 - Author: Bono (qhsh9713@gmail.com)
 """
+import argparse
+import os
 from diffusers import DiffusionPipeline
 
 
@@ -24,4 +26,6 @@ if __name__ == "__main__":
     pipeline.to(args.device)
 
     output = pipeline("An image of a squirrel in Picasso style").images[0]
-    output.save("image_of_squirrel_painting.png")
+    if not os.path.exists("outputs"):
+        os.makedirs("outputs")
+    output.save("outputs/image_of_squirrel_painting.png")

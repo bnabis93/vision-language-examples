@@ -1,6 +1,7 @@
 # ML
 torch           ==      2.0.0
 torchvision     ==      0.15.1
+transformers	==	4.31.0
 
 # ETC
 tqdm            ==      4.65.0
