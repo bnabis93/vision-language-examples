@@ -16,6 +16,7 @@ I will divide the pipeline of stable diffsion to each components.
 # Stable Diffusion Architecture
 - Model: CLIP / UNET / VAE
 - The other: Scheduler / Latent Vector
+
 ![stable-diffusion-architecture](./images/stable_diffusion.png)
 
 ## The role of model.
