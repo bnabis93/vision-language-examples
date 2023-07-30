@@ -11,14 +11,15 @@ from transformers import CLIPTextModel, CLIPTokenizer
 from torchvision import transforms as tfms
 from PIL import Image
 
+
 # Set seed
 torch.manual_seed(0)
 
 # Set global variables
 text_prompt = ["A cat in brown walkers gracefully sipping coffee in a cafe."]
-g = 7.5
 batch_size = len(text_prompt)
-steps = 100
+g = 7.5
+steps = 50
 dim = 512
 device = "cuda" if torch.cuda.is_available() else "cpu"
 if device == "cpu":
@@ -27,16 +28,6 @@ if device == "cpu":
 # Load clip (tokenizer, text encodoer)
 tokenizer = CLIPTokenizer.from_pretrained("openai/clip-vit-large-patch14")
 text_encoder = CLIPTextModel.from_pretrained("openai/clip-vit-large-patch14").to(device)
-
-# Encode text
-token = tokenizer(
-    text_prompt,
-    padding="max_length",
-    max_length=tokenizer.model_max_length,
-    truncation=True,
-    return_tensors="pt",
-)
-text_embedding = text_encoder(token.input_ids.to(device))[0]
 
 # Load Unet and scheduler
 scheduler = LMSDiscreteScheduler(
@@ -55,14 +46,36 @@ vae = AutoencoderKL.from_pretrained(
     "CompVis/stable-diffusion-v1-4", subfolder="vae"
 ).to(device)
 
+
+def text_encoding(prompts, maxlen=None, device=None):
+    """
+    A function to take a texual promt and convert it into embeddings
+    """
+    if maxlen is None:
+        maxlen = tokenizer.model_max_length
+    token = tokenizer(
+        prompts,
+        padding="max_length",
+        max_length=maxlen,
+        truncation=True,
+        return_tensors="pt",
+    )
+    return text_encoder(token.input_ids.to(device))[0]
+
+
+# Encode text
+text_embedding = text_encoding(prompts=text_prompt, device=device)
+
 # Define latent noise (gaussian noise)
 latents = torch.randn(batch_size, unet.in_channels, dim // 8, dim // 8).to(device)
 latents *= scheduler.init_noise_sigma
 
 # Iterating through defined steps
 ## Adding an unconditional prompt , helps in the generation process
-# uncond = text_embedding([""] * batch_size, text_embedding.shape[1])
-# emb = torch.cat([uncond, text_embedding])
+uncond = text_encoding(
+    prompts=[""] * batch_size, maxlen=text_embedding.shape[1], device=device
+)
+emb = torch.cat([uncond, text_embedding])
 for i, timestep in enumerate(tqdm(scheduler.timesteps)):
     # We need to scale the i/p latents to match the variance
     inp = scheduler.scale_model_input(torch.cat([latents] * 2), timestep)
