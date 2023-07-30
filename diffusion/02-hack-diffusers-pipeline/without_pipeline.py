@@ -5,7 +5,7 @@
 """
 import os
 import torch
-import tqdm
+from tqdm.auto import tqdm
 from diffusers import UNet2DConditionModel, LMSDiscreteScheduler, AutoencoderKL
 from transformers import CLIPTextModel, CLIPTokenizer
 from torchvision import transforms as tfms
@@ -61,13 +61,13 @@ latents *= scheduler.init_noise_sigma
 
 # Iterating through defined steps
 ## Adding an unconditional prompt , helps in the generation process
-uncond = text_embedding([""] * batch_size, text_embedding.shape[1])
-emb = torch.cat([uncond, text_embedding])
+# uncond = text_embedding([""] * batch_size, text_embedding.shape[1])
+# emb = torch.cat([uncond, text_embedding])
 for i, timestep in enumerate(tqdm(scheduler.timesteps)):
     # We need to scale the i/p latents to match the variance
     inp = scheduler.scale_model_input(torch.cat([latents] * 2), timestep)
     with torch.no_grad():
-        u, t = unet(inp, timestep, encoder_hidden_states=emb).sample.chunk(2)
+        u, t = unet(inp, timestep, encoder_hidden_states=text_embedding).sample.chunk(2)
 
     pred = u + g * (t - u)
     latents = scheduler.step(pred, timestep, latents).prev_sample
