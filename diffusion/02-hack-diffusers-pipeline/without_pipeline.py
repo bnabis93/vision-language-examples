@@ -80,7 +80,7 @@ for i, timestep in enumerate(tqdm(scheduler.timesteps)):
     # We need to scale the i/p latents to match the variance
     inp = scheduler.scale_model_input(torch.cat([latents] * 2), timestep)
     with torch.no_grad():
-        u, t = unet(inp, timestep, encoder_hidden_states=text_embedding).sample.chunk(2)
+        u, t = unet(inp, timestep, encoder_hidden_states=emb).sample.chunk(2)
 
     pred = u + g * (t - u)
     latents = scheduler.step(pred, timestep, latents).prev_sample
@@ -89,6 +89,7 @@ for i, timestep in enumerate(tqdm(scheduler.timesteps)):
     latents = (1 / 0.18215) * latents
     with torch.no_grad():
         image = vae.decode(latents).sample
+
     image = (image / 2 + 0.5).clamp(0, 1)
     image = image.detach().cpu().permute(0, 2, 3, 1).numpy()
     images = (image * 255).round().astype("uint8")
@@ -96,3 +97,6 @@ for i, timestep in enumerate(tqdm(scheduler.timesteps)):
     if not os.path.exists("outputs"):
         os.makedirs("outputs")
     pil_images[0].save(f"outputs/image_at_step_{i}.png")
+
+# Save final image
+pil_images[0].save("outputs/result_image.png")
