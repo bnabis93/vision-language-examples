@@ -1,4 +1,4 @@
-"""Reference code: https://towardsdatascience.com/stable-diffusion-using-hugging-face-501d8dbdd8
+"""Reference code:https://towardsdatascience.com/stable-diffusion-using-hugging-face-501d8dbdd8
 """
 import torch
 from PIL import Image
@@ -41,16 +41,6 @@ def load_image(p):
     Function to load images from a defined path
     """
     return Image.open(p).convert("RGB").resize((512, 512))
-
-
-def pil_to_latents(image):
-    """
-    Function to convert image to latents
-    """
-    init_image = tfms.ToTensor()(image).unsqueeze(0) * 2.0 - 1.0
-    init_image = init_image.to(device="cuda", dtype=torch.float16)
-    init_latent_dist = vae.encode(init_image).latent_dist.sample() * 0.18215
-    return init_latent_dist
 
 
 def latents_to_pil(latents):

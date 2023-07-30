@@ -67,7 +67,7 @@ def text_encoding(prompts, maxlen=None, device=None):
 text_embedding = text_encoding(prompts=text_prompt, device=device)
 
 # Define latent noise (gaussian noise)
-latents = torch.randn(batch_size, unet.in_channels, dim // 8, dim // 8).to(device)
+latents = torch.randn((batch_size, unet.in_channels, dim // 8, dim // 8)).to(device)
 latents *= scheduler.init_noise_sigma
 
 # Iterating through defined steps
