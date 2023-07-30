@@ -1,3 +1,5 @@
+"""Reference code: https://towardsdatascience.com/stable-diffusion-using-hugging-face-501d8dbdd8
+"""
 import torch
 from PIL import Image
 from torchvision import transforms as tfms
