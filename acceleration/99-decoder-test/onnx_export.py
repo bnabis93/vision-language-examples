@@ -3,7 +3,7 @@ from decoder import Decoder
 from torch.autograd import Variable
 
 # Create a random input tensor
-x = Variable(torch.randn(1, 512, 32, 32))
+x = Variable(torch.randn(1, 256, 32, 32))
 
 # Create an instance of the decoder
 decoder = Decoder(num_classes=10)
