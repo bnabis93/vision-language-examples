@@ -3,7 +3,7 @@
 """
 import torch
 import time
-from unet import Encoder, Decoder
+from decoder import Decoder
 
 # Define global variables
 torch.backends.cudnn.benchmark = True
@@ -13,14 +13,28 @@ if device == "cpu":
     exit(-1)
 
 # Define encoder and decoder
-encoder = Encoder()
-encoder = encoder.to(device)
-encoder_input = torch.randn(1, 3, 572, 572)
-embedding = Encoder(encoder_input.to(device))
+in_channels_list = [
+    256,
+    128,
+    64,
+    32,
+]  # For example, matching the output channels of encoder's stages
+out_channels_list = [
+    128,
+    64,
+    32,
+    16,
+]  # You can modify these numbers based on your model architecture.
 
-
-decoder = Decoder()
+decoder = Decoder(in_channels_list, out_channels_list)
 decoder = decoder.to(device)
+
+input_tensor = torch.randn(1, 32, 16, 16)
+skip1 = torch.randn(1, 256, 64, 64)
+skip2 = torch.randn(1, 128, 32, 32)
+skip3 = torch.randn(1, 64, 64, 64)
+skip4 = torch.randn(1, 32, 128, 128)
+skip_connections = [skip1, skip2, skip3, skip4]
 
 # Define input
 batch_sizes = [1, 2, 4, 8, 16, 32, 64]
@@ -29,7 +43,7 @@ for batch in batch_sizes:
 
     # Warm up
     for _ in range(10):
-        decoder(input.to(device), embedding[::-1][1:])
+        decoder(input_tensor, skip_connections)
 
     # Inference
     inference_times = []
@@ -37,7 +51,7 @@ for batch in batch_sizes:
         for _ in range(100):
             torch.cuda.synchronize()
             start = time.time()
-            decoder(input.to(device), embedding[::-1][1:])
+            decoder(input_tensor, skip_connections)
             torch.cuda.synchronize()
             end = time.time()
             inference_times.append((end - start) * 1000)
