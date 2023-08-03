@@ -13,15 +13,11 @@ if device == "cpu":
     print("This code only supports GPU.")
     exit(-1)
 
-decoder = Decoder(num_classes=10, num_filters=[64, 128, 256, 512]).to(device)
-
-x1 = Variable(torch.randn(1, 64, 256, 256)).to(device)
-x2 = Variable(torch.randn(1, 128, 128, 128)).to(device)
-x3 = Variable(torch.randn(1, 256, 64, 64)).to(device)
-x4 = Variable(torch.randn(1, 512, 32, 32)).to(device)
+decoder = Decoder(num_classes=10).to(device)
+x = Variable(torch.randn(1, 512, 32, 32)).to(device)
 # Warm up
 for _ in range(10):
-    decoder(x4, x3, x2, x1)
+    decoder(x)
 
 # Inference
 inference_times = []
@@ -29,7 +25,7 @@ with torch.no_grad():
     for _ in range(100):
         torch.cuda.synchronize()
         start = time.time()
-        decoder(x4, x3, x2, x1)
+        decoder(x)
         torch.cuda.synchronize()
         end = time.time()
         inference_times.append((end - start) * 1000)
