@@ -20,14 +20,19 @@ for _ in range(10):
     decoder(x)
 
 # Inference
-inference_times = []
-with torch.no_grad():
-    for _ in range(100):
-        torch.cuda.synchronize()
-        start = time.time()
-        decoder(x)
-        torch.cuda.synchronize()
-        end = time.time()
-        inference_times.append((end - start) * 1000)
+batch_sizes = [1, 2, 4, 8, 16, 32, 64]
+for batch in batch_sizes:
+    input = Variable(torch.randn(batch, 256, 32, 32)).to(device)
+    inference_times = []
+    with torch.no_grad():
+        for _ in range(100):
+            torch.cuda.synchronize()
+            start = time.time()
+            decoder(x)
+            torch.cuda.synchronize()
+            end = time.time()
+            inference_times.append((end - start) * 1000)
 
-print(f"decoder average inference time : {sum(inference_times)/len(inference_times)}ms")
+    print(
+        f"Batch: {batch}, decoder average inference time : {sum(inference_times)/len(inference_times)}ms"
+    )
