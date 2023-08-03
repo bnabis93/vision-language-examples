@@ -11,6 +11,8 @@ decoder = Decoder(num_classes=10)
 # Specify the name of the output ONNX file
 onnx_file_name = "./output/model.onnx"
 
+dynamic_axes = {"input": {0: "batch_size"}, "output": {0: "batch_size"}}
+
 # Export the model to an ONNX file
 torch.onnx.export(
     decoder,  # model being run
@@ -20,5 +22,6 @@ torch.onnx.export(
     opset_version=17,  # the ONNX version to export the model to
     do_constant_folding=True,  # whether to execute constant folding for optimization
     input_names=["input"],  # the model's input names
-    output_names=["output"],
-)  # the model's output names
+    output_names=["output"],  # the model's output names
+    dynamic_axes=dynamic_axes,
+)  # dynamic axes
