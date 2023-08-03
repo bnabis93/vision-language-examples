@@ -4,6 +4,7 @@
 import torch
 import time
 from decoder import Decoder
+from torch.autograd import Variable
 
 # Define global variables
 torch.backends.cudnn.benchmark = True
@@ -29,12 +30,10 @@ out_channels_list = [
 decoder = Decoder(in_channels_list, out_channels_list)
 decoder = decoder.to(device)
 
-input_tensor = torch.randn(1, 32, 16, 16)
-skip1 = torch.randn(1, 256, 64, 64)
-skip2 = torch.randn(1, 128, 32, 32)
-skip3 = torch.randn(1, 64, 64, 64)
-skip4 = torch.randn(1, 32, 128, 128)
-skip_connections = [skip1, skip2, skip3, skip4]
+x1 = Variable(torch.randn(1, 64, 256, 256)).to(device)
+x2 = Variable(torch.randn(1, 128, 128, 128)).to(device)
+x3 = Variable(torch.randn(1, 256, 64, 64)).to(device)
+x4 = Variable(torch.randn(1, 512, 32, 32)).to(device)
 
 # Define input
 batch_sizes = [1, 2, 4, 8, 16, 32, 64]
@@ -43,7 +42,7 @@ for batch in batch_sizes:
 
     # Warm up
     for _ in range(10):
-        decoder(input_tensor, skip_connections)
+        decoder = Decoder(num_classes=10, num_filters=[64, 128, 256, 512]).to(device)
 
     # Inference
     inference_times = []
@@ -51,7 +50,9 @@ for batch in batch_sizes:
         for _ in range(100):
             torch.cuda.synchronize()
             start = time.time()
-            decoder(input_tensor, skip_connections)
+            decoder = Decoder(num_classes=10, num_filters=[64, 128, 256, 512]).to(
+                device
+            )
             torch.cuda.synchronize()
             end = time.time()
             inference_times.append((end - start) * 1000)

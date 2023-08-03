@@ -1,37 +1,45 @@
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
+from torch import nn
+
+
+class ConvBlock(nn.Module):
+    def __init__(self, in_channels, out_channels):
+        super(ConvBlock, self).__init__()
+        self.conv = nn.Sequential(
+            nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+        )
+
+    def forward(self, x):
+        return self.conv(x)
 
 
 class DecoderBlock(nn.Module):
-    def __init__(self, in_channels, out_channels):
+    def __init__(self, in_channels, middle_channels, out_channels):
         super(DecoderBlock, self).__init__()
-        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1)
-        self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1)
-        self.up = nn.ConvTranspose2d(in_channels, in_channels, kernel_size=2, stride=2)
+        self.up = nn.ConvTranspose2d(
+            in_channels, middle_channels, kernel_size=2, stride=2
+        )
+        self.conv = ConvBlock(middle_channels, out_channels)
 
-    def forward(self, x, skip_connection):
-        x = F.relu(self.conv1(x))
-        x = F.relu(self.conv2(x))
-        x = self.up(x)
-        x = torch.cat([x, skip_connection], dim=1)
-        return x
+    def forward(self, x):
+        return self.conv(self.up(x))
 
 
 class Decoder(nn.Module):
-    def __init__(self, in_channels_list, out_channels_list):
+    def __init__(self, num_classes, num_filters):
         super(Decoder, self).__init__()
-        assert len(in_channels_list) == len(out_channels_list)
-        num_stages = len(in_channels_list)
-        self.num_stages = num_stages
-        self.stages = nn.ModuleList()
+        self.decoder4 = DecoderBlock(num_filters[3], num_filters[2] * 2, num_filters[2])
+        self.decoder3 = DecoderBlock(num_filters[2], num_filters[1] * 2, num_filters[1])
+        self.decoder2 = DecoderBlock(num_filters[1], num_filters[0] * 2, num_filters[0])
+        self.decoder1 = ConvBlock(num_filters[0], num_filters[0])
+        self.final = nn.Conv2d(num_filters[0], num_classes, kernel_size=1)
 
-        for i in range(num_stages):
-            stage = DecoderBlock(in_channels_list[i], out_channels_list[i])
-            self.stages.append(stage)
-
-    def forward(self, x, skip_connections):
-        assert len(skip_connections) == self.num_stages
-        for i in range(self.num_stages):
-            x = self.stages[i](x, skip_connections[i])
-        return x
+    def forward(self, x4, x3, x2, x1):
+        x4 = self.decoder4(x4)
+        x3 = self.decoder3(torch.cat([x4, x3], 1))
+        x2 = self.decoder2(torch.cat([x3, x2], 1))
+        x1 = self.decoder1(torch.cat([x2, x1], 1))
+        return self.final(x1)
