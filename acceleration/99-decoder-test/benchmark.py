@@ -14,7 +14,7 @@ if device == "cpu":
     exit(-1)
 
 decoder = Decoder(num_classes=10).to(device)
-x = Variable(torch.randn(1, 512, 32, 32)).to(device)
+x = Variable(torch.randn(1, 256, 32, 32)).to(device)
 # Warm up
 for _ in range(10):
     decoder(x)
