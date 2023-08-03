@@ -13,22 +13,7 @@ if device == "cpu":
     print("This code only supports GPU.")
     exit(-1)
 
-# Define encoder and decoder
-in_channels_list = [
-    256,
-    128,
-    64,
-    32,
-]  # For example, matching the output channels of encoder's stages
-out_channels_list = [
-    128,
-    64,
-    32,
-    16,
-]  # You can modify these numbers based on your model architecture.
-
-decoder = Decoder(in_channels_list, out_channels_list)
-decoder = decoder.to(device)
+decoder = Decoder(num_classes=10, num_filters=[64, 128, 256, 512]).to(device)
 
 x1 = Variable(torch.randn(1, 64, 256, 256)).to(device)
 x2 = Variable(torch.randn(1, 128, 128, 128)).to(device)
@@ -38,11 +23,10 @@ x4 = Variable(torch.randn(1, 512, 32, 32)).to(device)
 # Define input
 batch_sizes = [1, 2, 4, 8, 16, 32, 64]
 for batch in batch_sizes:
-    input = torch.randn(1, 512, 28, 28)
 
     # Warm up
     for _ in range(10):
-        decoder = Decoder(num_classes=10, num_filters=[64, 128, 256, 512]).to(device)
+        decoder(x4, x3, x2, x1)
 
     # Inference
     inference_times = []
@@ -50,9 +34,7 @@ for batch in batch_sizes:
         for _ in range(100):
             torch.cuda.synchronize()
             start = time.time()
-            decoder = Decoder(num_classes=10, num_filters=[64, 128, 256, 512]).to(
-                device
-            )
+            decoder(x4, x3, x2, x1)
             torch.cuda.synchronize()
             end = time.time()
             inference_times.append((end - start) * 1000)
