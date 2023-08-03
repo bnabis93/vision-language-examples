@@ -3,7 +3,7 @@
 """
 import torch
 import time
-from decoder import Decoder
+from unet import Encoder, Decoder
 
 # Define global variables
 torch.backends.cudnn.benchmark = True
@@ -12,9 +12,15 @@ if device == "cpu":
     print("This code only supports GPU.")
     exit(-1)
 
-# Define pretrained vit model
-model = Decoder()
-model = model.to(device)
+# Define encoder and decoder
+encoder = Encoder()
+encoder = encoder.to(device)
+encoder_input = torch.randn(1, 3, 572, 572)
+embedding = Encoder(encoder_input.to(device))
+
+
+decoder = Decoder()
+decoder = decoder.to(device)
 
 # Define input
 batch_sizes = [1, 2, 4, 8, 16, 32, 64]
@@ -23,7 +29,7 @@ for batch in batch_sizes:
 
     # Warm up
     for _ in range(10):
-        model(input.to(device))
+        decoder(input.to(device), embedding[::-1][1:])
 
     # Inference
     inference_times = []
@@ -31,7 +37,7 @@ for batch in batch_sizes:
         for _ in range(100):
             torch.cuda.synchronize()
             start = time.time()
-            model(input.to(device))
+            decoder(input.to(device), embedding[::-1][1:])
             torch.cuda.synchronize()
             end = time.time()
             inference_times.append((end - start) * 1000)
